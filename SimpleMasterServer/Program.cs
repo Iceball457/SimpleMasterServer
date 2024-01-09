@@ -5,11 +5,24 @@ using SimpleMasterServer.Registration;
 namespace SimpleMasterServer {
     internal class Program {
         private static void Main(string[] args) {
-            var builder = WebApplication.CreateBuilder(args);
+
+            if (args.Length != 2) {
+                Console.WriteLine("Usage: program <server-lifespan> <check-in-frequency>");
+                return;
+            }
+            int lifespan, interval;
+            try {
+                lifespan = int.Parse(args[0]);
+                interval = int.Parse(args[1]);
+            } catch {
+                Console.WriteLine("Usage: program <server-lifespan> <check-in-frequency>\nBoth arguments must be integers.");
+                return;
+            }
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddSingleton<ServerRegistry>();
             builder.Services.AddHostedService<CheckupService>(provider => {
-                return new(provider.GetRequiredService<ServerRegistry>(), 3, 2);
+                return new(provider.GetRequiredService<ServerRegistry>(), lifespan, interval);
             });
 
             var app = builder.Build();
