@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMasterServer.Results;
@@ -8,8 +9,13 @@ namespace SimpleMasterServer.Registration {
 
         public Result RegisterServer(ServerData server) {
             Registrations.Add(new(server));
-            Console.WriteLine($"New Server Added! {server.Game}, {server.Hostname}");
+            Console.WriteLine($"New Server Added! {server.Name}, {server.Hostname}");
             return Result.SUCCESS;
+        }
+
+        public Result GetServers() {
+            List<ServerData> servers = Registrations.Select(server => server.Server).ToList();
+            return new(true, JsonSerializer.Serialize(servers));
         }
 
         public Result RemoveServer(ServerData server) {

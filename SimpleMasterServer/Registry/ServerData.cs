@@ -1,13 +1,14 @@
 namespace SimpleMasterServer.Registration {
+    [Serializable]
     public record ServerData {
+        public string Name { get; }
         public string Game { get; }
-        public string Mode { get; }
         public string Hostname { get; }
         public string AlivePath { get; }
 
-        public ServerData(string game, string mode, string hostname, string alivePath) {
+        public ServerData(string name, string game, string hostname, string alivePath) {
+            Name = name;
             Game = game;
-            Mode = mode;
             Hostname = hostname;
             AlivePath = alivePath;
         }

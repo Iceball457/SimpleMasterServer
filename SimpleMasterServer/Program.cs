@@ -34,9 +34,12 @@ namespace SimpleMasterServer {
 
             app.MapPost("/register/", (ServerData data, [FromServices] ServerRegistry registry) => {
                 registry.RegisterServer(data);
-                return $"Registered {data.Game}\n";
+                return $"Registered {data.Name}\n";
             });
 
+            app.MapGet("/getservers/", ([FromServices] ServerRegistry registry) => {
+                return registry.GetServers();
+            });
 
             app.Run();
         }
